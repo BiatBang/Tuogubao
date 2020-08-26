@@ -1,7 +1,11 @@
 package util;
 
+import com.jbgroup.tuogubao.model.Contact;
+import com.jbgroup.tuogubao.model.ContactInfo;
 import com.jbgroup.tuogubao.model.User;
 import com.jbgroup.tuogubao.model.UserBuilder;
+import com.jbgroup.tuogubao.util.ContactJSONMapper;
+import com.jbgroup.tuogubao.util.IJSONMapper;
 import com.jbgroup.tuogubao.util.JSONMapper;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -105,4 +109,24 @@ public class JSONMapperTest {
         assertThat(tcb.getPassword(), is("nimabi"));
     }
 
+    @Test
+    public void ParseNewContactInfo() {
+        String param = "{\"type\": \"email\", \"content\": \"email@gmail.com\"}";
+        IJSONMapper<ContactInfo, ContactInfo> cimapper = new JSONMapper(ContactInfo.class, param);
+        ContactInfo ci = cimapper.parse();
+        System.out.println(ci.getType());
+        System.out.println(ci.getContent());
+    }
+
+    @Test
+    public void ParseNewContact() {
+        String param = "{\"name\":\"dad\", \"words\":\"Say my name.\", " +
+                "\"contactInfos\":[{\"type\":\"phone\",\"content\":\"123455\"}," +
+                "{\"type\":\"email\",\"content\":\"email@email.com\"},]," +
+                "\"messages\":[{\"content\":\"I died\",\"createDate\":\"2020-05-05\"}," +
+                "{\"content\":\"I died again\",\"createDate\":\"2020-05-08\"},]}";
+        ContactJSONMapper contactJSONMapper = new ContactJSONMapper(param);
+        Contact contact = contactJSONMapper.parse();
+        System.out.println(contact);
+    }
 }

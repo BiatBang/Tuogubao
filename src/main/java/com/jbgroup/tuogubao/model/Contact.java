@@ -28,16 +28,8 @@ public class Contact {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getWords() {
         return words;
-    }
-
-    public void setWords(String words) {
-        this.words = words;
     }
 
     public static class Builder implements IBuilder<Contact> {
@@ -98,9 +90,18 @@ public class Contact {
         public Contact build() {
             return new Contact(this._id, this.name, this.words, this.contactInfos, this.messages);
         }
+    }
 
-        public String toString() {
-            return "id: " + this._id + ", name: " + this.name + ", last words: " + this.words;
+    public String toString() {
+        String res = "id: " + this._id + ", ";
+        res += "name:" + this.name + ", ";
+        res += "last words:" + this.words + ", ";
+        for(ContactInfo ci: this.contactInfos) {
+            res += ci.toString() + ", ";
         }
+        for(Message m: this.messages) {
+            res += m.toString() + ", ";
+        }
+        return res;
     }
 }

@@ -13,7 +13,7 @@ import static com.jbgroup.tuogubao.util.StringUtil.getSetter;
 * author: laoma
 * map a stringify json object into a specified class
 * */
-public class JSONMapper<K, B> {
+public class JSONMapper<K, B> implements IJSONMapper<K, B> {
     private String jsonStr;
     private K result;
     private Class<K> modelClass;
@@ -88,11 +88,6 @@ public class JSONMapper<K, B> {
                 hasBuilder = true;
                 builderClass = innerCls[0];
             }
-
-//            if(isClass(this.modelClass.getName() + "Builder")) {
-//                hasBuilder = true;
-//                builderClass = (Class<B>) Class.forName(this.modelClass.getName() + "Builder");
-//            }
 
             if(hasBuilder) {
                 // if there is a Builder class, use it instead of setters

@@ -3,6 +3,7 @@ package com.jbgroup.tuogubao.model;
 public class ContactInfo {
     private String type;
     private String content;
+    public String[] pbFields = {"type", "content"};
 
     public String getType() {
         return type;
@@ -18,5 +19,9 @@ public class ContactInfo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String toString() {
+        return "{ type: " + this.type + ", content: " + this.content + " }";
     }
 }

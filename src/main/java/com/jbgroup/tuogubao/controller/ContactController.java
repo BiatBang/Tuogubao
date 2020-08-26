@@ -1,20 +1,12 @@
 package com.jbgroup.tuogubao.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.jbgroup.tuogubao.model.Contact;
-import com.jbgroup.tuogubao.model.User;
-import com.jbgroup.tuogubao.model.UserBuilder;
 import com.jbgroup.tuogubao.util.JSONMapper;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,20 +29,33 @@ import static com.jbgroup.tuogubao.util.StringUtil.getSetter;
 @RestController
 public class ContactController {
 
-    @RequestMapping(value = "/retriveAll/{user_id}", method = RequestMethod.GET)
-    public String retriveAllContacts(@PathVariable String user_id){
+    @RequestMapping(value = "/retriveAll/{userId}", method = RequestMethod.GET)
+    public List<Contact> retriveAllContacts(@PathVariable String userId){
         // use the user_id to retrieve all its contacts
-//        MongoClient mongoClient = new MongoClient(new MongoClientURI(MONGO_URI));
+        List<Contact> contacts = new ArrayList<>();
 
         try {
             MongoClient mongoClient = new MongoClient();
-            DB database = mongoClient.getDB("contact");
+            DB database = mongoClient.getDB("tuogubao");
+            // retrieve the user by user_id
+            DBCollection collection = database.getCollection("user");
+            DBObject userQuery = new BasicDBObject();
+            userQuery.put("_id", new ObjectId(userId));
+            DBObject user = collection.findOne(userQuery);
+            List<DBObject> contactObjs = (List<DBObject>) user.get("contacts");
+
+            for(DBObject cont: contactObjs) {
+                Contact.Builder builder = new Contact.Builder();
+                if(cont.containsField("name")) builder.setName(cont.get("name").toString());
+                if(cont.containsField("words")) builder.setWords(cont.get("words").toString());
+                contacts.add(builder.build());
+            }
 
         } catch(UnknownHostException e) {
             System.out.println(e);
         }
 
-        return "";
+        return contacts;
     }
 
     @RequestMapping(value = "/addNew", method = RequestMethod.POST)

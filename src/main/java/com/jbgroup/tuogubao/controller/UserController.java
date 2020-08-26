@@ -60,11 +60,6 @@ public class UserController {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-//        catch (JsonMappingException e) {
-//            e.printStackTrace();
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
 
         return "";
     }

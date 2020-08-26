@@ -37,7 +37,7 @@ We are still writing the design in a relational way.
             contact_id: id,
             name: "xxx",
             words: "a/sentence/to/this/content",
-            contacts: [
+            contactsInfos: [
                 {
                     type: "phone",
                     content: "1111111111",

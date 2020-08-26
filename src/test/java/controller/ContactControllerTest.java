@@ -2,6 +2,7 @@ package controller;
 
 import com.jbgroup.tuogubao.controller.ContactController;
 import com.jbgroup.tuogubao.controller.UserController;
+import com.jbgroup.tuogubao.model.Contact;
 import com.jbgroup.tuogubao.model.User;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 @SpringBootTest
 public class ContactControllerTest {
@@ -29,7 +32,17 @@ public class ContactControllerTest {
     @Test
     public void AddNewContactSucceed() {
         String userId = "5f39dc0b53a53793bec683b5";
-        String param = "{\"name\": \"baba\", \"words\": \"I died\"}";
+        String param = "{\"name\": \"baba\", \"words\": \"I wake up\"}";
         contactController.addContact(userId, param);
+    }
+
+    @Test
+    public void RetrieveAllContacts() {
+        String userId = "5f39dc0b53a53793bec683b5";
+        List<Contact> contacts = contactController.retriveAllContacts(userId);
+        for(Contact cont: contacts) {
+            System.out.println(cont.getName());
+            System.out.println(cont.getWords());
+        }
     }
 }
