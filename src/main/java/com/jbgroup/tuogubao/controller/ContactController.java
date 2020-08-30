@@ -1,6 +1,8 @@
 package com.jbgroup.tuogubao.controller;
 
 import com.jbgroup.tuogubao.model.Contact;
+import com.jbgroup.tuogubao.util.ContactJSONMapper;
+import com.jbgroup.tuogubao.util.IJSONMapper;
 import com.jbgroup.tuogubao.util.JSONMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,8 +32,8 @@ import static com.jbgroup.tuogubao.util.StringUtil.getSetter;
 @RestController
 public class ContactController {
 
-    @RequestMapping(value = "/retriveAll/{userId}", method = RequestMethod.GET)
-    public List<Contact> retriveAllContacts(@PathVariable String userId){
+    @RequestMapping(value = "/retriveAll", method = RequestMethod.GET)
+    public List<Contact> retriveAllContacts(@RequestParam(value="userId") String userId){
         // use the user_id to retrieve all its contacts
         List<Contact> contacts = new ArrayList<>();
 
@@ -62,9 +65,8 @@ public class ContactController {
     public String addContact(@RequestBody String userId, @RequestBody String param){
         // use the user_id to retrieve all its contacts
 //        MongoClient mongoClient = new MongoClient(new MongoClientURI(MONGO_URI));
-
         try {
-            JSONMapper<Contact, Contact.Builder> mapper = new JSONMapper<>(Contact.class, param);
+            ContactJSONMapper mapper = new ContactJSONMapper(param);
             Contact contact = mapper.parse();
 
             MongoClient mongoClient = new MongoClient();
